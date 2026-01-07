@@ -95,6 +95,12 @@ Current quality gate settings:
 ## 🔍 Troubleshooting
 
 ### Common Issues:
+- **Unknown host sonarqube**: Use `http://host.docker.internal:9000` in Jenkins OR connect both containers to the same network:
+  ```bash
+  docker network create devops-net
+  docker network connect devops-net jenkins
+  docker network connect devops-net sonarqube
+  ```
 - **Connection refused**: Ensure SonarQube is running on port 9000
 - **Authentication failed**: Verify token is correctly configured in Jenkins
 - **Coverage not showing**: Check JaCoCo plugin execution in Maven logs

@@ -14,14 +14,15 @@ echo "🧹 Cleaning up existing SonarQube container..."
 docker stop sonarqube 2>/dev/null || true
 docker rm sonarqube 2>/dev/null || true
 
-# Create SonarQube data directory
-echo "📁 Creating SonarQube data directory..."
-mkdir -p sonarqube_data
+# Create Docker network for Jenkins integration
+echo "🌐 Creating Docker network..."
+docker network create devops-net 2>/dev/null || true
 
 # Run SonarQube container
 echo "🐳 Starting SonarQube container..."
 docker run -d \
   --name sonarqube \
+  --network devops-net \
   -p 9000:9000 \
   -v $(pwd)/sonarqube_data:/opt/sonarqube/data \
   sonarqube:latest

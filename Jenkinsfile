@@ -7,6 +7,10 @@ pipeline {
     }
 
     environment {
+        SCANNER_HOME = tool 'sonar-scanner'
+        SONAR_HOST_URL = 'http://sonarqube:9000'
+        SONAR_PROJECT_KEY = 'fullstack-blogging-app'
+        SONAR_PROJECT_NAME = 'FullStack-Blogging-App'
         MAVEN_OPTS = "-Dmaven.test.failure.ignore=false"
     }
 
@@ -38,8 +42,15 @@ pipeline {
                 withSonarQubeEnv('sonar') {
                     sh '''
                         mvn sonar:sonar \
-                          -Dsonar.projectKey=fullstack-blogging-app \
-                          -Dsonar.projectName=FullStack-Blogging-App
+                          -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
+                          -Dsonar.projectName="${SONAR_PROJECT_NAME}" \
+                          -Dsonar.host.url=${SONAR_HOST_URL} \
+                          -Dsonar.java.coveragePlugin=jacoco \
+                          -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml \
+                          -Dsonar.junit.reportPaths=target/surefire-reports \
+                          -Dsonar.java.binaries=target/classes \
+                          -Dsonar.sources=src/main/java \
+                          -Dsonar.tests=src/test/java
                     '''
                 }
             }
