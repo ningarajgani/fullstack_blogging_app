@@ -12,6 +12,7 @@ pipeline {
         SONAR_PROJECT_KEY = 'fullstack-blogging-app'
         SONAR_PROJECT_NAME = 'FullStack-Blogging-App'
         MAVEN_OPTS = "-Dmaven.test.failure.ignore=false"
+        APP_VERSION = '0.0.7' // Added APP_VERSION
     }
 
     stages {
@@ -87,7 +88,8 @@ pipeline {
         stage('Deploy from Nexus (Docker)') {
             steps {
                 script {
-                    sh '''
+                      sh '''
+                      export DOCKER_BUILDKIT=0
                       docker build --network devops-net -t twitter-app:${BUILD_NUMBER} .
                       docker rm -f twitter-app || true
                       docker run -d \
