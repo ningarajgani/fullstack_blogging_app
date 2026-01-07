@@ -1,11 +1,17 @@
-FROM eclipse-temurin:17-jdk-alpine
-    
+FROM eclipse-temurin:17-jre
+
+ARG NEXUS_URL=http://nexus:8081
+ARG GROUP_PATH=com/example/twitter-app
+ARG VERSION=0.0.3
+
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y curl
+
+RUN curl -f \
+  ${NEXUS_URL}/repository/maven-releases/${GROUP_PATH}/${VERSION}/twitter-app-${VERSION}.jar \
+  -o app.jar
+
 EXPOSE 8080
- 
-ENV APP_HOME /usr/src/app
 
-COPY target/*.jar $APP_HOME/app.jar
-
-WORKDIR $APP_HOME
-
-CMD ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java","-jar","app.jar"]
