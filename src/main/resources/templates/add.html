@@ -2,144 +2,338 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Add Post</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
+    <title>Add Post - TwitterApp</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-        body {
-            background: linear-gradient(135deg, #6e45e2, #88d3ce);
-            font-family: 'Poppins', sans-serif;
+        * {
             margin: 0;
             padding: 0;
-            color: #ffffff;
-            display: flex;
-            flex-direction: column;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+            color: #1a202c;
+            line-height: 1.6;
             min-height: 100vh;
-            overflow-x: hidden;
         }
 
-        .navbar {
-            background-color: rgba(34, 34, 34, 0.8);
-            padding: 10px 20px;
-            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
-            position: fixed;
+        /* Header */
+        .header {
+            background: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
+            position: sticky;
             top: 0;
-            width: 100%;
             z-index: 1000;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
 
-        .navbar .nav-link, .navbar .navbar-brand {
-            color: #88d3ce !important;
-            font-weight: bold;
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
         }
 
-        .navbar .nav-link:hover {
-            color: #ffffff !important;
-        }
-
-        .container {
-            max-width: 600px;
-            background-color: rgba(0, 0, 0, 0.7);
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.5);
-            margin-top: 80px;
-            margin-bottom: auto;
-            animation: fadeIn 1s ease-in-out;
-        }
-
-        h1 {
-            color: #88d3ce;
-            text-align: center;
-            margin-bottom: 40px;
-            font-size: 32px;
-            position: relative;
-            animation: fadeInDown 1s ease-in-out;
-        }
-
-        h1:after {
-            content: '';
-            display: block;
-            width: 60px;
-            height: 4px;
-            background-color: #6e45e2;
-            margin: 10px auto 0;
-            border-radius: 2px;
-        }
-
-        label {
-            font-weight: bold;
-            color: #ffffff;
-        }
-
-        textarea {
-            resize: none;
-            background-color: #333;
-            color: #ffffff;
-            border: 1px solid #444;
-            border-radius: 5px;
-            padding: 10px;
-            font-size: 14px;
-            transition: background-color 0.3s, transform 0.2s;
-        }
-
-        textarea:focus {
-            background-color: #444;
-            outline: none;
-            transform: translateY(-2px);
-        }
-
-        textarea::placeholder {
-            color: #ccc;
-        }
-
-        .btn-primary {
-            background-color: #6e45e2;
-            border-color: #6e45e2;
-            width: 100%;
-            font-weight: bold;
-            font-size: 16px;
-            transition: background-color 0.3s, transform 0.2s;
-        }
-
-        .btn-primary:hover {
-            background-color: #88d3ce;
-            border-color: #88d3ce;
-            transform: translateY(-3px);
-        }
-
-        .footer {
-            background-color: rgba(34, 34, 34, 0.8);
-            padding: 10px;
-            text-align: center;
-            color: #bbbbbb;
-            margin-top: auto;
-            animation: fadeInUp 1s ease-in-out;
-            width: 100%;
-        }
-
-        .footer a {
-            color: #88d3ce;
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #667eea;
             text-decoration: none;
         }
 
-        .footer a:hover {
-            color: #ffffff;
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
+        .nav-link {
+            color: #4a5568;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.2s ease;
         }
 
-        @keyframes fadeInDown {
+        .nav-link:hover {
+            background: #f7fafc;
+            color: #667eea;
+        }
+
+        .nav-link.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .nav-link.logout {
+            background: #fed7d7;
+            color: #c53030;
+        }
+
+        .nav-link.logout:hover {
+            background: #feb2b2;
+        }
+
+        /* Profile Dropdown */
+        .profile-dropdown {
+            position: relative;
+        }
+
+        .profile-btn {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+        }
+
+        .profile-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            min-width: 150px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.2s ease;
+            margin-top: 0.5rem;
+        }
+
+        .dropdown-menu.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-item {
+            display: block;
+            padding: 0.75rem 1rem;
+            color: #4a5568;
+            text-decoration: none;
+            transition: background 0.2s ease;
+            border-bottom: 1px solid #f7fafc;
+        }
+
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown-item:hover {
+            background: #f7fafc;
+            color: #2d3748;
+        }
+
+        .dropdown-item.logout {
+            color: #c53030;
+        }
+
+        .dropdown-item.logout:hover {
+            background: #fed7d7;
+        }
+
+        /* Main Content */
+        .main-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            color: #718096;
+            font-size: 1.1rem;
+        }
+
+        /* Form Container */
+        .form-container {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #2d3748;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .form-textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-family: inherit;
+            line-height: 1.6;
+            resize: vertical;
+            transition: all 0.2s ease;
+            background: #fafbfc;
+        }
+
+        .form-textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-textarea::placeholder {
+            color: #9ca3af;
+        }
+
+        .char-counter {
+            text-align: right;
+            margin-top: 0.5rem;
+            font-size: 0.875rem;
+            color: #718096;
+        }
+
+        .char-counter.warning {
+            color: #f56565;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            border: none;
+        }
+
+        .btn-secondary {
+            background: #f7fafc;
+            color: #4a5568;
+            border: 1px solid #e2e8f0;
+        }
+
+        .btn-secondary:hover {
+            background: #edf2f7;
+            color: #2d3748;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-width: 120px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Tips Section */
+        .tips-section {
+            background: #f7fafc;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            border-left: 4px solid #667eea;
+        }
+
+        .tips-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tips-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .tips-list li {
+            color: #4a5568;
+            margin-bottom: 0.5rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .tips-list li::before {
+            content: '💡';
+            position: absolute;
+            left: 0;
+        }
+
+        /* Success Message */
+        .success-message {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            color: white;
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            text-align: center;
+            font-weight: 500;
+            animation: slideInDown 0.5s ease;
+        }
+
+        @keyframes slideInDown {
             from {
                 opacity: 0;
                 transform: translateY(-20px);
@@ -150,59 +344,167 @@
             }
         }
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 1rem;
             }
-            to {
-                opacity: 1;
-                transform: translateY(0);
+
+            .form-container {
+                padding: 1.5rem;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .nav-menu {
+                gap: 1rem;
+            }
+
+            .nav-link {
+                padding: 0.5rem;
+                font-size: 0.875rem;
             }
         }
     </style>
 </head>
 <body>
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" th:href="@{/}">Twitter</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/}">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/add}">Add Post</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/logout}">Logout</a>
-                </li>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a th:href="@{/}" class="logo">TwitterApp</a>
+            <nav class="nav-menu">
+                <a th:href="@{/}" class="nav-link">Home</a>
+                <a th:href="@{/myposts}" class="nav-link">My Posts</a>
+                <a th:href="@{/add}" class="nav-link active">Add Post</a>
+                
+                <!-- Profile Dropdown -->
+                <div class="profile-dropdown">
+                    <button class="profile-btn" onclick="toggleDropdown()">U</button>
+                    <div class="dropdown-menu" id="profileDropdown">
+                        <a href="#" class="dropdown-item">Profile</a>
+                        <a th:href="@{/logout}" class="dropdown-item logout">Logout</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1 class="page-title">Create New Post</h1>
+            <p class="page-subtitle">Share your thoughts with the community</p>
+        </div>
+
+        <!-- Success Message (if any) -->
+        <div class="success-message" th:if="${param.success}">
+            Your post has been published successfully!
+        </div>
+
+        <!-- Form Container -->
+        <div class="form-container">
+            <form th:action="@{/add}" method="post" id="postForm">
+                <div class="form-group">
+                    <label for="content" class="form-label">What's on your mind?</label>
+                    <textarea 
+                        class="form-textarea" 
+                        id="content" 
+                        name="content" 
+                        placeholder="Share your thoughts, ideas, or experiences with the community..."
+                        required
+                        maxlength="500"
+                        oninput="updateCharCounter()"></textarea>
+                    <div class="char-counter" id="charCounter">0 / 500 characters</div>
+                </div>
+
+                <div class="form-actions">
+                    <a th:href="@{/}" class="btn btn-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-primary" id="submitBtn">
+                        📝 Publish Post
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Tips Section -->
+        <div class="tips-section">
+            <h3 class="tips-title">
+                <span>✨</span>
+                Tips for Great Posts
+            </h3>
+            <ul class="tips-list">
+                <li>Keep your posts engaging and authentic</li>
+                <li>Use hashtags to reach a wider audience</li>
+                <li>Ask questions to encourage interaction</li>
+                <li>Share valuable insights or experiences</li>
+                <li>Be respectful and considerate of others</li>
             </ul>
         </div>
     </div>
-</nav>
 
-<div class="container">
-    <h1>Add Post</h1>
-    <form th:action="@{/add}" method="post">
-        <div class="mb-3">
-            <label for="content" class="form-label">Content:</label>
-            <textarea class="form-control" id="content" name="content" rows="5" placeholder="Share your thoughts..." required></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">Post</button>
-    </form>
-</div>
+    <script>
+        function toggleDropdown() {
+            const dropdown = document.getElementById('profileDropdown');
+            dropdown.classList.toggle('show');
+        }
 
-<div class="footer">
-    <p>&copy; 2024 DevOps Shack. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
-</div>
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('profileDropdown');
+            const profileBtn = document.querySelector('.profile-btn');
+            
+            if (!profileBtn.contains(event.target) && !dropdown.contains(event.target)) {
+                dropdown.classList.remove('show');
+            }
+        });
 
-<!-- Bootstrap JS (Optional) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        function updateCharCounter() {
+            const textarea = document.getElementById('content');
+            const counter = document.getElementById('charCounter');
+            const submitBtn = document.getElementById('submitBtn');
+            const currentLength = textarea.value.length;
+            const maxLength = 500;
+            
+            counter.textContent = `${currentLength} / ${maxLength} characters`;
+            
+            if (currentLength > maxLength * 0.9) {
+                counter.classList.add('warning');
+            } else {
+                counter.classList.remove('warning');
+            }
+            
+            if (currentLength === 0) {
+                submitBtn.disabled = true;
+                submitBtn.textContent = '📝 Publish Post';
+            } else {
+                submitBtn.disabled = false;
+                submitBtn.textContent = '📝 Publish Post';
+            }
+        }
+
+        // Initialize character counter
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCharCounter();
+        });
+
+        // Form submission handling
+        document.getElementById('postForm').addEventListener('submit', function(e) {
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = '📤 Publishing...';
+        });
+    </script>
 </body>
 </html>
 

@@ -2,253 +2,593 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Home</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
+    <title>TwitterApp - Home</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-        body {
-            background: linear-gradient(135deg, #6e45e2, #88d3ce);
-            font-family: 'Poppins', sans-serif;
+        * {
             margin: 0;
             padding: 0;
-            color: #ffffff;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            overflow-x: hidden;
+            box-sizing: border-box;
         }
 
-        .navbar {
-            background-color: rgba(34, 34, 34, 0.8);
-            padding: 10px 20px;
-            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
-            position: fixed;
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+            color: #1a202c;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            background: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
+            position: sticky;
             top: 0;
-            width: 100%;
             z-index: 1000;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
 
-        .navbar .nav-link, .navbar .navbar-brand {
-            color: #88d3ce !important;
-            font-weight: bold;
-        }
-
-        .navbar .nav-link:hover {
-            color: #ffffff !important;
-        }
-
-        .container {
+        .header-container {
             max-width: 1200px;
-            padding: 20px;
-            margin-top: 80px;
-            margin-bottom: auto;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
         }
 
-        h1 {
-            color: #88d3ce;
-            text-align: center;
-            margin-bottom: 40px;
-            font-size: 36px;
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: #4a5568;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-link:hover {
+            background: #f7fafc;
+            color: #667eea;
+        }
+
+        .nav-link.primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .nav-link.primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .nav-link.logout {
+            background: #fed7d7;
+            color: #c53030;
+        }
+
+        .nav-link.logout:hover {
+            background: #feb2b2;
+        }
+
+        /* Profile Dropdown */
+        .profile-dropdown {
             position: relative;
-            animation: fadeInDown 1s ease-in-out;
         }
 
-        h1:after {
-            content: '';
-            display: block;
-            width: 60px;
-            height: 4px;
-            background-color: #6e45e2;
-            margin: 10px auto 0;
-            border-radius: 2px;
-        }
-
-        .welcome-message {
-            text-align: center;
-            margin-bottom: 40px;
-            animation: fadeInUp 1s ease-in-out;
-        }
-
-        .card {
-            background-color: rgba(0, 0, 0, 0.7);
+        .profile-btn {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
             border: none;
-            border-radius: 10px;
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
-            margin-bottom: 20px;
-            transition: transform 0.3s, box-shadow 0.3s;
-            animation: fadeIn 1s ease-in-out;
+            transition: all 0.2s ease;
         }
 
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 0 45px rgba(0, 0, 0, 0.7);
+        .profile-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
         }
 
-        .card-text {
-            color: #ffffff;
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            min-width: 150px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.2s ease;
+            margin-top: 0.5rem;
+        }
+
+        .dropdown-menu.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-item {
+            display: block;
+            padding: 0.75rem 1rem;
+            color: #4a5568;
+            text-decoration: none;
+            transition: background 0.2s ease;
+            border-bottom: 1px solid #f7fafc;
+        }
+
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown-item:hover {
+            background: #f7fafc;
+            color: #2d3748;
+        }
+
+        .dropdown-item.logout {
+            color: #c53030;
+        }
+
+        .dropdown-item.logout:hover {
+            background: #fed7d7;
+        }
+
+        /* Main Content */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 2rem;
+        }
+
+        .content-area {
+            min-height: 0;
+        }
+
+        .sidebar {
+            position: sticky;
+            top: 80px;
+            height: fit-content;
+        }
+
+        /* Welcome Section */
+        .welcome-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem 2rem;
+            border-radius: 16px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .welcome-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .welcome-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Posts Section */
+        .posts-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+
+        .posts-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .posts-count {
+            background: #edf2f7;
+            color: #4a5568;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .posts-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .post-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
+            transition: all 0.2s ease;
+        }
+
+        .post-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .post-content {
+            font-size: 1rem;
+            color: #2d3748;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .post-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: #718096;
+            font-size: 0.875rem;
         }
 
         .post-author {
-            font-style: italic;
-            color: #bbbbbb;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .trending-section {
-            margin-top: 60px;
-            padding: 40px 20px;
-            background-color: rgba(34, 34, 34, 0.9);
-            border-radius: 10px;
-            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.5);
-            animation: fadeInUp 1s ease-in-out;
+        .author-avatar {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.875rem;
         }
 
-        .trending-section h2 {
-            color: #6e45e2;
-            margin-bottom: 30px;
-            text-align: center;
-            font-size: 28px;
+        .post-time {
+            color: #a0aec0;
+        }
+
+        /* Sidebar */
+        .sidebar-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 1rem;
         }
 
         .trending-item {
             display: flex;
             align-items: center;
-            margin-bottom: 20px;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            border-radius: 8px;
+            transition: background 0.2s ease;
+            cursor: pointer;
         }
 
-        .trending-item:last-child {
-            margin-bottom: 0;
+        .trending-item:hover {
+            background: #f7fafc;
         }
 
-        .trending-item-icon {
-            font-size: 30px;
-            color: #88d3ce;
-            margin-right: 15px;
+        .trending-icon {
+            font-size: 1.25rem;
         }
 
-        .trending-item-title {
-            font-weight: bold;
-            color: #ffffff;
+        .trending-text {
+            font-weight: 500;
+            color: #4a5568;
         }
 
-        .footer {
-            background-color: rgba(34, 34, 34, 0.8);
-            padding: 10px;
+        .trending-count {
+            margin-left: auto;
+            background: #edf2f7;
+            color: #718096;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1rem;
             text-align: center;
-            color: #bbbbbb;
-            margin-top: auto;
-            animation: fadeInUp 1s ease-in-out;
-            width: 100%;
+            border: 1px solid #e2e8f0;
         }
 
-        .footer a {
-            color: #88d3ce;
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: #718096;
+            margin-top: 0.25rem;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: #718096;
+        }
+
+        .empty-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .empty-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #4a5568;
+        }
+
+        .empty-text {
+            margin-bottom: 1.5rem;
+        }
+
+        .empty-action {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
             text-decoration: none;
+            font-weight: 500;
+            transition: transform 0.2s ease;
         }
 
-        .footer a:hover {
-            color: #ffffff;
+        .empty-action:hover {
+            transform: translateY(-1px);
+            color: white;
         }
 
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        /* Loading Animation */
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            color: #718096;
         }
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #e2e8f0;
+            border-top: 2px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 0.5rem;
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-container {
+                grid-template-columns: 1fr;
+                padding: 1rem;
             }
-            to {
-                opacity: 1;
+
+            .sidebar {
+                position: static;
+            }
+
+            .welcome-title {
+                font-size: 2rem;
+            }
+
+            .nav-menu {
+                gap: 1rem;
+            }
+
+            .nav-link {
+                padding: 0.5rem;
+                font-size: 0.875rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" th:href="@{/}">Twitter</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/}">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/add}">Add Post</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/logout}">Logout</a>
-                </li>
-            </ul>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="#" class="logo">TwitterApp</a>
+            <nav class="nav-menu">
+                <a th:href="@{/}" class="nav-link">Home</a>
+                <a th:href="@{/myposts}" class="nav-link">My Posts</a>
+                <a th:href="@{/add}" class="nav-link primary">Add Post</a>
+                
+                <!-- Profile Dropdown -->
+                <div class="profile-dropdown">
+                    <button class="profile-btn" onclick="toggleDropdown()">U</button>
+                    <div class="dropdown-menu" id="profileDropdown">
+                        <a href="#" class="dropdown-item">Profile</a>
+                        <a th:href="@{/logout}" class="dropdown-item logout">Logout</a>
+                    </div>
+                </div>
+            </nav>
         </div>
-    </div>
-</nav>
+    </header>
 
-<div class="container">
-    <h1>Daily Posts</h1>
+    <!-- Main Content -->
+    <div class="main-container">
+        <main class="content-area">
+            <!-- Welcome Section -->
+            <section class="welcome-section">
+                <h1 class="welcome-title">Daily Posts</h1>
+                <p class="welcome-subtitle">
+                    Welcome to your daily dose of the latest posts. Explore what's trending, share your thoughts, and stay connected with the community.
+                </p>
+            </section>
 
-    <div class="welcome-message">
-        <p>Welcome to your daily dose of the latest posts. Explore what's trending, share your thoughts, and stay connected with the community.</p>
-    </div>
+            <!-- Posts Section -->
+            <section class="posts-section">
+                <div class="posts-header">
+                    <h2 class="posts-title">Recent Posts</h2>
+                    <span class="posts-count" th:text="${#lists.size(posts)} + ' posts'">0 posts</span>
+                </div>
 
-    <div class="row">
-        <div class="col-lg-6 col-md-6 col-sm-12" th:each="post : ${posts}">
-            <div class="card">
-                <div class="card-body">
-                    <p class="card-text" th:text="${post.content}"></p>
-                    <p class="post-author">Posted by: <span th:text="${post.user.username}"></span></p>
+                <div class="posts-grid" th:if="${posts != null and !posts.isEmpty()}">
+                    <article class="post-card" th:each="post : ${posts}">
+                        <div class="post-content" th:text="${post.content}"></div>
+                        <div class="post-meta">
+                            <div class="post-author">
+                                <div class="author-avatar" th:text="${#strings.substring(post.user.username, 0, 1).toUpperCase()}">U</div>
+                                <span th:text="${post.user.username}">Username</span>
+                            </div>
+                            <div class="post-time">Just now</div>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- Empty State -->
+                <div class="empty-state" th:if="${posts == null or posts.isEmpty()}">
+                    <div class="empty-icon">📝</div>
+                    <h3 class="empty-title">No posts yet</h3>
+                    <p class="empty-text">Be the first to share something with the community!</p>
+                    <a th:href="@{/add}" class="empty-action">Create Your First Post</a>
+                </div>
+            </section>
+        </main>
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <!-- Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" th:text="${#lists.size(posts)}">0</div>
+                    <div class="stat-label">Total Posts</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">24</div>
+                    <div class="stat-label">Active Users</div>
                 </div>
             </div>
-        </div>
+
+            <!-- Trending Topics -->
+            <div class="sidebar-card">
+                <h3 class="sidebar-title">Trending Topics</h3>
+                <div class="trending-item">
+                    <span class="trending-icon">🔥</span>
+                    <span class="trending-text">#BreakingNews</span>
+                    <span class="trending-count">1.2k</span>
+                </div>
+                <div class="trending-item">
+                    <span class="trending-icon">💡</span>
+                    <span class="trending-text">#TechInnovations</span>
+                    <span class="trending-count">856</span>
+                </div>
+                <div class="trending-item">
+                    <span class="trending-icon">🎉</span>
+                    <span class="trending-text">#FunFriday</span>
+                    <span class="trending-count">642</span>
+                </div>
+                <div class="trending-item">
+                    <span class="trending-icon">🌟</span>
+                    <span class="trending-text">#Inspiration</span>
+                    <span class="trending-count">423</span>
+                </div>
+                <div class="trending-item">
+                    <span class="trending-icon">🚀</span>
+                    <span class="trending-text">#StartupLife</span>
+                    <span class="trending-count">312</span>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="sidebar-card">
+                <h3 class="sidebar-title">Quick Actions</h3>
+                <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                    <a th:href="@{/add}" class="nav-link primary" style="text-align: center; display: block;">
+                        ✏️ Write a Post
+                    </a>
+                    <a href="#" class="nav-link" style="text-align: center; display: block; background: #f7fafc;">
+                        🔍 Explore
+                    </a>
+                </div>
+            </div>
+        </aside>
     </div>
 
-    <div class="trending-section">
-        <h2>Trending Topics</h2>
-        <div class="trending-item">
-            <div class="trending-item-icon">🔥</div>
-            <div class="trending-item-title">#BreakingNews</div>
-        </div>
-        <div class="trending-item">
-            <div class="trending-item-icon">💡</div>
-            <div class="trending-item-title">#TechInnovations</div>
-        </div>
-        <div class="trending-item">
-            <div class="trending-item-icon">🎉</div>
-            <div class="trending-item-title">#FunFriday</div>
-        </div>
-    </div>
-</div>
+    <script>
+        function toggleDropdown() {
+            const dropdown = document.getElementById('profileDropdown');
+            dropdown.classList.toggle('show');
+        }
 
-<div class="footer">
-    <p>&copy; 2024 DevOps Shack. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
-</div>
-
-<!-- Bootstrap JS (Optional) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('profileDropdown');
+            const profileBtn = document.querySelector('.profile-btn');
+            
+            if (!profileBtn.contains(event.target) && !dropdown.contains(event.target)) {
+                dropdown.classList.remove('show');
+            }
+        });
+    </script>
 </body>
 </html>
 

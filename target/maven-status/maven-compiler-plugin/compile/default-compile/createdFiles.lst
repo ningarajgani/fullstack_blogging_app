@@ -3,6 +3,7 @@ com\example\twitterapp\repository\PostRepository.class
 com\example\twitterapp\config\CustomUserDetails.class
 com\example\twitterapp\service\UserServiceImpl.class
 com\example\twitterapp\config\CustomUserDetailsService.class
+com\example\twitterapp\controller\CustomErrorController.class
 com\example\twitterapp\controller\UserController.class
 com\example\twitterapp\service\UserService.class
 com\example\twitterapp\model\Post.class
