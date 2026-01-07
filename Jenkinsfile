@@ -85,26 +85,32 @@ pipeline {
             }
         }
 
-        stage('Deploy from Nexus (Docker)') {
+        stage('Docker Build') {
             steps {
                 script {
-                      sh '''
+                    sh '''
                       export DOCKER_BUILDKIT=0
-                      docker build --network devops-net -t twitter-app:${BUILD_NUMBER} .
-                      docker rm -f twitter-app || true
-                      docker run -d \
-                        --name twitter-app \
-                        --network devops-net \
-                        -p 8080:8080 \
-                        twitter-app:${BUILD_NUMBER}
+                      docker build --network devops-net -t twitter-app:${APP_VERSION} .
+                      docker tag twitter-app:${APP_VERSION} twitter-app:latest
                     '''
                 }
             }
         }
 
-        stage('Package (Skip Tests)') {
+        stage('Deploy Docker Container') {
             steps {
-                sh 'mvn package -DskipTests'
+                sh '''
+                  echo "Stopping old container if exists..."
+                  docker stop twitter-app || true
+                  docker rm twitter-app || true
+
+                  echo "Running new container..."
+                  docker run -d \
+                    --name twitter-app \
+                    --network devops-net \
+                    -p 8080:8080 \
+                    twitter-app:latest
+                '''
             }
         }
     }
