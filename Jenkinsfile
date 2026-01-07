@@ -8,12 +8,6 @@ pipeline {
 
     stages {
 
-        stage('Clean Workspace') {
-            steps {
-                cleanWs()
-            }
-        }
-
         stage('Checkout Code') {
             steps {
                 git branch: 'main',
@@ -53,27 +47,16 @@ pipeline {
             steps {
                 sh 'mvn clean package -DskipTests'
             }
-            post {
-                success {
-                    archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
-                }
-            }
-        }
-
-        stage('Docker Build') {
-            steps {
-                sh 'docker build -t fullstack-blogging-app:latest .'
-            }
         }
     }
 
     post {
         success {
-            echo 'CI pipeline completed successfully'
+            echo 'CI Pipeline completed successfully'
             echo 'SonarQube Dashboard: http://localhost:9000'
         }
         failure {
-            echo 'CI pipeline failed'
+            echo 'CI Pipeline failed'
         }
     }
 }
