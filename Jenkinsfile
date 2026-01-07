@@ -45,16 +45,17 @@ pipeline {
         }
 
         stage('SonarQube Analysis') {
-            steps {
-                withSonarQubeEnv('sonar') {
-                    sh '''
-                        mvn sonar:sonar \
-                        -Dsonar.projectKey=fullstack-blogging-app \
-                        -Dsonar.projectName=FullStack-Blogging-App
-                    '''
-                }
-            }
+    steps {
+        withSonarQubeEnv('sonar') {
+            bat '''
+                mvn sonar:sonar ^
+                -Dsonar.projectKey=fullstack-blogging-app ^
+                -Dsonar.projectName=FullStack-Blogging-App ^
+                -Dsonar.host.url=http://localhost:9000
+            '''
         }
+    }
+}
 
         stage('Quality Gate') {
             steps {
