@@ -88,10 +88,11 @@ pipeline {
             steps {
                 script {
                     sh '''
-                      docker build -t twitter-app:${BUILD_NUMBER} .
+                      docker build --network devops-net -t twitter-app:${BUILD_NUMBER} .
                       docker rm -f twitter-app || true
                       docker run -d \
                         --name twitter-app \
+                        --network devops-net \
                         -p 8080:8080 \
                         twitter-app:${BUILD_NUMBER}
                     '''

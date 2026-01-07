@@ -2,7 +2,7 @@ FROM eclipse-temurin:17-jre
 
 ARG NEXUS_URL=http://nexus:8081
 ARG GROUP_PATH=com/example/twitter-app
-ARG VERSION=0.0.5
+ARG VERSION=0.0.6
 
 WORKDIR /app
 
