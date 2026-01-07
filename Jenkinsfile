@@ -71,6 +71,18 @@ pipeline {
                 }
             }
         }
+    
+        stage('Publish Artifact to Nexus') {
+            steps {
+                withMaven(
+                    maven: 'maven3',
+                    jdk: 'jdk17',
+                    globalMavenSettingsConfig: 'global-settings'
+                ) {
+                    sh 'mvn deploy -DskipTests'
+                }
+            }
+        }
 
         stage('Package (Skip Tests)') {
             steps {
