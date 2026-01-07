@@ -1,35 +1,78 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: bloggingapp-deployment
+  name: fullstack-blogging-app
+  labels:
+    app: fullstack-blogging-app
 spec:
+  replicas: 2
   selector:
     matchLabels:
-      app: bloggingapp
-  replicas: 2
+      app: fullstack-blogging-app
   template:
     metadata:
       labels:
-        app: bloggingapp
+        app: fullstack-blogging-app
     spec:
       containers:
-        - name: bloggingapp
-          image: abrahimcse/bloggingapp:latest # Updated image to private DockerHub image
-          imagePullPolicy: Always
-          ports:
-            - containerPort: 8080
+      - name: fullstack-blogging-app
+        image: ningarajgani/fullstack-blogging-app:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: "prod"
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /login
+            port: 8080
+          initialDelaySeconds: 60
+          periodSeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /login
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
       imagePullSecrets:
-        - name: regcred # Reference to the Docker registry secret
+        - name: regcred
+
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: bloggingapp-ssvc
+  name: fullstack-blogging-app-service
+  labels:
+    app: fullstack-blogging-app
 spec:
-  selector:
-    app: bloggingapp
-  ports:
-    - protocol: "TCP"
-      port: 80
-      targetPort: 8080 
   type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 8080
+    protocol: TCP
+  selector:
+    app: fullstack-blogging-app
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  application.properties: |
+    spring.application.name=twitter-app
+    spring.datasource.url=jdbc:h2:mem:twitterapp
+    spring.datasource.driverClassName=org.h2.Driver
+    spring.datasource.username=sa
+    spring.datasource.password=password
+    spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+    spring.h2.console.enabled=false
+    spring.thymeleaf.cache=true
