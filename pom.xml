@@ -15,7 +15,7 @@
 
     <groupId>com.example</groupId>
     <artifactId>twitter-app</artifactId>
-    <version>0.0.8-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
     <name>twitter-app</name>
     <description>Spring Boot Blogging Application</description>
 
