@@ -9,7 +9,7 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y curl
 
 RUN curl -f \
-  ${NEXUS_URL}/repository/maven-releases/${GROUP_PATH}/${VERSION}/twitter-app-${VERSION}.jar \
+  ${NEXUS_URL}/repository/maven-snapshots/${GROUP_PATH}/${VERSION}/twitter-app-${VERSION}.jar \
   -o app.jar
 
 EXPOSE 8080
