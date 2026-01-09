@@ -97,17 +97,26 @@ pipeline {
             }
         }
 
-        stage('Deploy to Kubernetes') {
+        stage('Deploy Docker Container') {
             steps {
                 script {
-                    def kubectlExists = sh(script: 'command -v kubectl || true', returnStdout: true).trim()
-                    if (kubectlExists) {
-                        sh 'kubectl apply -f deployment-service.yml'
-                        sh 'kubectl rollout restart deployment/fullstack-blogging-app'
-                    } else {
-                        echo "WARNING: kubectl not found on Jenkins runner. Skipping automated deployment."
-                        echo "Please run 'kubectl apply -f deployment-service.yml' manually from your local PC."
-                    }
+                    sh '''
+                      echo "Stopping old container if exists..."
+                      docker stop scriblog || true
+                      docker rm scriblog || true
+
+                      echo "Running new container..."
+                      docker run -d \
+                        --name scriblog \
+                        --network devops-net \
+                        -p 8080:8080 \
+                        -e SPRING_DATASOURCE_URL=jdbc:postgresql://db.ziatzkjwpuxlgrzwbalc.supabase.co:5432/postgres \
+                        -e SPRING_DATASOURCE_USERNAME=postgres \
+                        -e SPRING_DATASOURCE_PASSWORD=NINGU6361@n \
+                        -e SUPABASE_URL=https://ziatzkjwpuxlgrzwbalc.supabase.co \
+                        -e SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InppYXR6a2p3cHV4bGdyendiYWxjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc5NDU0MTIsImV4cCI6MjA4MzUyMTQxMn0.QXgNrpu8NWu48OoDmwTPjAQFgV5u9k0bzULh5YHgY9s \
+                        ningarajgani/fullstack-blogging-app:latest
+                    '''
                 }
             }
         }
