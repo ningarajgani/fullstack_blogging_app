@@ -110,7 +110,7 @@ pipeline {
                         --name scriblog \
                         --network devops-net \
                         -p 8080:8080 \
-                        -e SPRING_DATASOURCE_URL=jdbc:postgresql://db.ziatzkjwpuxlgrzwbalc.supabase.co:5432/postgres \
+                        -e SPRING_DATASOURCE_URL="jdbc:postgresql://db.ziatzkjwpuxlgrzwbalc.supabase.co:5432/postgres?sslmode=require" \
                         -e SPRING_DATASOURCE_USERNAME=postgres \
                         -e SPRING_DATASOURCE_PASSWORD=NINGU6361@n \
                         -e SUPABASE_URL=https://ziatzkjwpuxlgrzwbalc.supabase.co \
