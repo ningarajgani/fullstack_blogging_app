@@ -90,27 +90,19 @@ pipeline {
                 script {
                     sh '''
                       export DOCKER_BUILDKIT=0
-                      docker build --network devops-net -t twitter-app:${APP_VERSION} .
-                      docker tag twitter-app:${APP_VERSION} twitter-app:latest
+                      docker build --network devops-net -t ningarajgani/fullstack-blogging-app:${APP_VERSION} .
+                      docker tag ningarajgani/fullstack-blogging-app:${APP_VERSION} ningarajgani/fullstack-blogging-app:latest
                     '''
                 }
             }
         }
 
-        stage('Deploy Docker Container') {
+        stage('Deploy to Kubernetes') {
             steps {
-                sh '''
-                  echo "Stopping old container if exists..."
-                  docker stop twitter-app || true
-                  docker rm twitter-app || true
-
-                  echo "Running new container..."
-                  docker run -d \
-                    --name twitter-app \
-                    --network devops-net \
-                    -p 8080:8080 \
-                    twitter-app:latest
-                '''
+                script {
+                    sh 'kubectl apply -f deployment-service.yml'
+                    sh 'kubectl rollout restart deployment/fullstack-blogging-app'
+                }
             }
         }
     }
