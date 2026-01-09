@@ -108,9 +108,10 @@ pipeline {
                       echo "Running new container..."
                       docker run -d \
                         --name scriblog \
+                        --add-host=db.ziatzkjwpuxlgrzwbalc.supabase.co:2406:da14:271:990f:ad63:ed64:468b:b319 \
                         -p 8080:8080 \
-                        -e SPRING_DATASOURCE_URL="jdbc:postgresql://db.ziatzkjwpuxlgrzwbalc.supabase.co:6543/postgres?sslmode=require" \
-                        -e SPRING_DATASOURCE_USERNAME=postgres.ziatzkjwpuxlgrzwbalc \
+                        -e SPRING_DATASOURCE_URL="jdbc:postgresql://db.ziatzkjwpuxlgrzwbalc.supabase.co:5432/postgres?sslmode=require" \
+                        -e SPRING_DATASOURCE_USERNAME=postgres \
                         -e SPRING_DATASOURCE_PASSWORD=NINGU6361@n \
                         -e SUPABASE_URL=https://ziatzkjwpuxlgrzwbalc.supabase.co \
                         -e SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InppYXR6a2p3cHV4bGdyendiYWxjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc5NDU0MTIsImV4cCI6MjA4MzUyMTQxMn0.QXgNrpu8NWu48OoDmwTPjAQFgV5u9k0bzULh5YHgY9s \
