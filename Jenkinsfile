@@ -101,9 +101,9 @@ pipeline {
             steps {
                 script {
                     sh '''
-                      echo "Stopping old container if exists..."
-                      docker stop scriblog || true
-                      docker rm scriblog || true
+                      echo "Stopping old containers if they exist..."
+                      docker stop scriblog twitter-app || true
+                      docker rm scriblog twitter-app || true
 
                       echo "Running new container..."
                       docker run -d \
