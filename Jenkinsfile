@@ -109,7 +109,7 @@ pipeline {
                       docker run -d \
                         --name scriblog \
                         -p 8080:8080 \
-                        -e SPRING_DATASOURCE_URL="jdbc:postgresql://aws-0-us-east-1.pooler.supabase.com:6543/postgres?sslmode=require" \
+                        -e SPRING_DATASOURCE_URL="jdbc:postgresql://aws-0-ap-southeast-1.pooler.supabase.com:6543/postgres?sslmode=require" \
                         -e SPRING_DATASOURCE_USERNAME=postgres.ziatzkjwpuxlgrzwbalc \
                         -e SPRING_DATASOURCE_PASSWORD=NINGU6361@n \
                         -e SUPABASE_URL=https://ziatzkjwpuxlgrzwbalc.supabase.co \
