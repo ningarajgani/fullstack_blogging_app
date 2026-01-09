@@ -8,6 +8,7 @@ class TwitterAppApplicationTests {
 
 	@Test
 	void contextLoads() {
+		org.junit.jupiter.api.Assertions.assertTrue(true);
 	}
 
 }

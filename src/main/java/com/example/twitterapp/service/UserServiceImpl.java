@@ -33,6 +33,8 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByEmail(email);
     }
 
+    private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(UserServiceImpl.class);
+
     @Override
     public User save(User userDto) {
         // Try to signup with Supabase Auth first
@@ -47,9 +49,9 @@ public class UserServiceImpl implements UserService {
         user.setEmail(userDto.getEmail());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         user.setVerified(false);
-        System.out.println("Processing local save for user: " + user.getUsername() + ", email: " + user.getEmail());
+        logger.info("Processing local save for user: {}, email: {}", user.getUsername(), user.getEmail());
         User savedUser = userRepository.save(user);
-        System.out.println("Local save successful for ID: " + savedUser.getId());
+        logger.info("Local save successful for ID: {}", savedUser.getId());
         return savedUser;
     }
 

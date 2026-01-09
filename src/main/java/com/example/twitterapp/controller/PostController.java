@@ -2,7 +2,6 @@ package com.example.twitterapp.controller;
 
 import com.example.twitterapp.config.CustomUserDetails;
 import com.example.twitterapp.model.Post;
-import com.example.twitterapp.model.User;
 import com.example.twitterapp.service.PostService;
 import com.example.twitterapp.service.UserService;
 import org.springframework.security.core.Authentication;
@@ -64,7 +63,7 @@ public class PostController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         CustomUserDetails user = (CustomUserDetails) auth.getPrincipal();
         var existingUser = userService.findByUsername(user.getUsername());
-        
+
         Optional<Post> post = postService.findById(id);
         if (post.isPresent() && postService.isOwner(id, existingUser)) {
             model.addAttribute("post", post.get());
@@ -78,7 +77,7 @@ public class PostController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         CustomUserDetails user = (CustomUserDetails) auth.getPrincipal();
         var existingUser = userService.findByUsername(user.getUsername());
-        
+
         if (postService.isOwner(id, existingUser)) {
             Optional<Post> existingPost = postService.findById(id);
             if (existingPost.isPresent()) {
@@ -95,7 +94,7 @@ public class PostController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         CustomUserDetails user = (CustomUserDetails) auth.getPrincipal();
         var existingUser = userService.findByUsername(user.getUsername());
-        
+
         if (postService.isOwner(id, existingUser)) {
             postService.deleteById(id);
         }

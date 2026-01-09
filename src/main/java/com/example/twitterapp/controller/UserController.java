@@ -22,6 +22,8 @@ public class UserController {
         this.userService = userService;
     }
 
+    private static final String REGISTER_VIEW = "register";
+
     @GetMapping("/login")
     public String login(Model model, User userDto) {
         model.addAttribute("user", userDto);
@@ -31,7 +33,7 @@ public class UserController {
     @GetMapping("/register")
     public String register(Model model, User userDto) {
         model.addAttribute("user", userDto);
-        return "register";
+        return REGISTER_VIEW;
     }
 
     @PostMapping("/register")
@@ -39,12 +41,12 @@ public class UserController {
         User existingUserByUsername = userService.findByUsername(userDto.getUsername());
         if (existingUserByUsername != null) {
             model.addAttribute("Userexist", "Username is already taken.");
-            return "register";
+            return REGISTER_VIEW;
         }
         User existingUserByEmail = userService.findByEmail(userDto.getEmail());
         if (existingUserByEmail != null) {
             model.addAttribute("Emailexist", "Email is already registered.");
-            return "register";
+            return REGISTER_VIEW;
         }
         userService.save(userDto);
         return "redirect:/verify?email=" + userDto.getEmail();

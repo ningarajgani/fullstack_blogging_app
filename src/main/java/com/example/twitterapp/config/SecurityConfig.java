@@ -23,31 +23,33 @@ public class SecurityConfig {
                 return new BCryptPasswordEncoder();
         }
 
+        private static final String LOGIN_URL = "/login";
+
         @Bean
         public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
                 http
                                 .csrf(csrf -> csrf.disable())
                                 .authorizeHttpRequests(authz -> authz
                                                 .requestMatchers("/register").permitAll()
-                                                .requestMatchers("/login").permitAll()
+                                                .requestMatchers(LOGIN_URL).permitAll()
                                                 .requestMatchers("/verify").permitAll()
                                                 .requestMatchers("/error").permitAll()
                                                 .requestMatchers("/images/**").permitAll()
                                                 .requestMatchers("/static/**").permitAll()
                                                 .anyRequest().authenticated())
                                 .formLogin(form -> form
-                                                .loginPage("/login")
-                                                .loginProcessingUrl("/login")
+                                                .loginPage(LOGIN_URL)
+                                                .loginProcessingUrl(LOGIN_URL)
                                                 .defaultSuccessUrl("/", true)
                                                 .permitAll())
                                 .logout(logout -> logout
                                                 .invalidateHttpSession(true)
                                                 .clearAuthentication(true)
                                                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                                                .logoutSuccessUrl("/login?logout")
+                                                .logoutSuccessUrl(LOGIN_URL + "?logout")
                                                 .permitAll())
                                 .headers(headers -> headers
-                                                .frameOptions(frameOptions -> frameOptions.sameOrigin()));
+                                                .frameOptions(org.springframework.security.config.annotation.web.configurers.HeadersConfigurer.FrameOptionsConfig::sameOrigin));
 
                 return http.build();
         }

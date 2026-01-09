@@ -19,6 +19,8 @@ public class SupabaseAuthService {
 
     private final RestTemplate restTemplate = new RestTemplate();
 
+    private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(SupabaseAuthService.class);
+
     public boolean signup(String email, String password) {
         String url = supabaseUrl + "/auth/v1/signup";
 
@@ -34,12 +36,12 @@ public class SupabaseAuthService {
         HttpEntity<Map<String, String>> entity = new HttpEntity<>(body, headers);
 
         try {
-            System.out.println("Attempting Supabase Signup for: " + email);
+            logger.info("Attempting Supabase Signup for: {}", email);
             ResponseEntity<String> response = restTemplate.postForEntity(url, entity, String.class);
-            System.out.println("Supabase Signup Response: " + response.getStatusCode());
+            logger.info("Supabase Signup Response: {}", response.getStatusCode());
             return response.getStatusCode().is2xxSuccessful();
         } catch (Exception e) {
-            System.err.println("Supabase Signup Error: " + e.getMessage());
+            logger.error("Supabase Signup Error: {}", e.getMessage());
             return false;
         }
     }

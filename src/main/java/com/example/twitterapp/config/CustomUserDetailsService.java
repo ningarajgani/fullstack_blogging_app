@@ -32,7 +32,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         return new CustomUserDetails(user.getUsername(), user.getPassword(), user.isVerified(), authorities());
     }
 
-    public Collection<? extends GrantedAuthority> authorities() {
+    public Collection<GrantedAuthority> authorities() {
         return Arrays.asList(new SimpleGrantedAuthority("USER"));
     }
 
