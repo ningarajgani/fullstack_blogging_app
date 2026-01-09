@@ -76,7 +76,7 @@ metadata:
   name: app-config
 data:
   application.properties: |
-    spring.application.name=twitter-app
+    spring.application.name=scriblog
     spring.datasource.url=jdbc:postgresql://db.ziatzkjwpuxlgrzwbalc.supabase.co:5432/postgres
     spring.datasource.username=postgres
     spring.datasource.password=NINGU6361@n
