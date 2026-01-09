@@ -15,7 +15,7 @@ spec:
         app: fullstack-blogging-app
     spec:
       containers:
-      - name: fullstack-blogging-app
+      - name: scriblog
         image: ningarajgani/fullstack-blogging-app:latest
         imagePullPolicy: IfNotPresent
         ports:

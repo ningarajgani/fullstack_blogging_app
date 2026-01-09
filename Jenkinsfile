@@ -100,8 +100,14 @@ pipeline {
         stage('Deploy to Kubernetes') {
             steps {
                 script {
-                    sh 'kubectl apply -f deployment-service.yml'
-                    sh 'kubectl rollout restart deployment/fullstack-blogging-app'
+                    def kubectlExists = sh(script: 'command -v kubectl || true', returnStdout: true).trim()
+                    if (kubectlExists) {
+                        sh 'kubectl apply -f deployment-service.yml'
+                        sh 'kubectl rollout restart deployment/fullstack-blogging-app'
+                    } else {
+                        echo "WARNING: kubectl not found on Jenkins runner. Skipping automated deployment."
+                        echo "Please run 'kubectl apply -f deployment-service.yml' manually from your local PC."
+                    }
                 }
             }
         }
