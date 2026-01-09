@@ -17,7 +17,7 @@ spec:
       containers:
       - name: fullstack-blogging-app
         image: ningarajgani/fullstack-blogging-app:latest
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080
         env:
