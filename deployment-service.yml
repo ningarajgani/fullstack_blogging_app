@@ -23,6 +23,14 @@ spec:
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: "prod"
+        - name: DB_URL
+          value: "jdbc:postgresql://db.ziatzkjwpuxlgrzwbalc.supabase.co:5432/postgres"
+        - name: DB_USERNAME
+          value: "postgres"
+        - name: DB_PASSWORD
+          value: "NINGU6361@n"
+        - name: SUPABASE_ANON_KEY
+          value: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InppYXR6a2p3cHV4bGdyendiYWxjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc5NDU0MTIsImV4cCI6MjA4MzUyMTQxMn0.QXgNrpu8NWu48OoDmwTPjAQFgV5u9k0bzULh5YHgY9s"
         resources:
           requests:
             memory: "256Mi"
@@ -69,10 +77,12 @@ metadata:
 data:
   application.properties: |
     spring.application.name=twitter-app
-    spring.datasource.url=jdbc:h2:mem:twitterapp
-    spring.datasource.driverClassName=org.h2.Driver
-    spring.datasource.username=sa
-    spring.datasource.password=password
-    spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
-    spring.h2.console.enabled=false
+    spring.datasource.url=jdbc:postgresql://db.ziatzkjwpuxlgrzwbalc.supabase.co:5432/postgres
+    spring.datasource.username=postgres
+    spring.datasource.password=NINGU6361@n
+    spring.datasource.driverClassName=org.postgresql.Driver
+    spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
+    spring.jpa.hibernate.ddl-auto=update
+    supabase.url=https://ziatzkjwpuxlgrzwbalc.supabase.co
+    supabase.anon.key=${SUPABASE_ANON_KEY}
     spring.thymeleaf.cache=true

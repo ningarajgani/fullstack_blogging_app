@@ -12,7 +12,11 @@ public class UserServiceImpl implements UserService {
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private SupabaseAuthService supabaseAuthService;
 
     public UserServiceImpl(UserRepository userRepository) {
         super();
@@ -25,9 +29,41 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    @Override
     public User save(User userDto) {
-        User user = new User(userDto.getUsername(), passwordEncoder.encode(userDto.getPassword()));
-        return userRepository.save(user);
+        // Try to signup with Supabase Auth first
+        supabaseAuthService.signup(userDto.getEmail(), userDto.getPassword());
+
+        // Even if supabase fails (e.g. user already exists in auth), we want to save to
+        // our local DB
+        // to manage the verification state if it's the first time they are registering
+        // with Scriblog.
+        User user = new User();
+        user.setUsername(userDto.getUsername());
+        user.setEmail(userDto.getEmail());
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        user.setVerified(false);
+        System.out.println("Processing local save for user: " + user.getUsername() + ", email: " + user.getEmail());
+        User savedUser = userRepository.save(user);
+        System.out.println("Local save successful for ID: " + savedUser.getId());
+        return savedUser;
+    }
+
+    @Override
+    public boolean verifyUser(String email, String otp) {
+        if (supabaseAuthService.verifyOtp(email, otp)) {
+            User user = userRepository.findByEmail(email);
+            if (user != null) {
+                user.setVerified(true);
+                userRepository.save(user);
+                return true;
+            }
+        }
+        return false;
     }
 
 }

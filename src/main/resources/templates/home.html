@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <title>TwitterApp - Home</title>
+    <title>Scriblog - Home</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
@@ -417,8 +418,13 @@
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
         /* Responsive Design */
@@ -451,16 +457,17 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Header -->
     <header class="header">
         <div class="header-container">
-            <a href="#" class="logo">TwitterApp</a>
+            <a href="#" class="logo">Scriblog</a>
             <nav class="nav-menu">
                 <a th:href="@{/}" class="nav-link">Home</a>
                 <a th:href="@{/myposts}" class="nav-link">My Posts</a>
                 <a th:href="@{/add}" class="nav-link primary">Add Post</a>
-                
+
                 <!-- Profile Dropdown -->
                 <div class="profile-dropdown">
                     <button class="profile-btn" onclick="toggleDropdown()">U</button>
@@ -480,7 +487,8 @@
             <section class="welcome-section">
                 <h1 class="welcome-title">Daily Posts</h1>
                 <p class="welcome-subtitle">
-                    Welcome to your daily dose of the latest posts. Explore what's trending, share your thoughts, and stay connected with the community.
+                    Welcome to your daily dose of the latest posts. Explore what's trending, share your thoughts, and
+                    stay connected with the community.
                 </p>
             </section>
 
@@ -496,7 +504,8 @@
                         <div class="post-content" th:text="${post.content}"></div>
                         <div class="post-meta">
                             <div class="post-author">
-                                <div class="author-avatar" th:text="${#strings.substring(post.user.username, 0, 1).toUpperCase()}">U</div>
+                                <div class="author-avatar"
+                                    th:text="${#strings.substring(post.user.username, 0, 1).toUpperCase()}">U</div>
                                 <span th:text="${post.user.username}">Username</span>
                             </div>
                             <div class="post-time">Just now</div>
@@ -580,15 +589,15 @@
         }
 
         // Close dropdown when clicking outside
-        document.addEventListener('click', function(event) {
+        document.addEventListener('click', function (event) {
             const dropdown = document.getElementById('profileDropdown');
             const profileBtn = document.querySelector('.profile-btn');
-            
+
             if (!profileBtn.contains(event.target) && !dropdown.contains(event.target)) {
                 dropdown.classList.remove('show');
             }
         });
     </script>
 </body>
-</html>
 
+</html>

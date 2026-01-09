@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <title>Add Post - TwitterApp</title>
+    <title>Add Post - Scriblog</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
@@ -338,6 +339,7 @@
                 opacity: 0;
                 transform: translateY(-20px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -377,16 +379,17 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Header -->
     <header class="header">
         <div class="header-container">
-            <a th:href="@{/}" class="logo">TwitterApp</a>
+            <a th:href="@{/}" class="logo">Scriblog</a>
             <nav class="nav-menu">
                 <a th:href="@{/}" class="nav-link">Home</a>
                 <a th:href="@{/myposts}" class="nav-link">My Posts</a>
                 <a th:href="@{/add}" class="nav-link active">Add Post</a>
-                
+
                 <!-- Profile Dropdown -->
                 <div class="profile-dropdown">
                     <button class="profile-btn" onclick="toggleDropdown()">U</button>
@@ -417,14 +420,9 @@
             <form th:action="@{/add}" method="post" id="postForm">
                 <div class="form-group">
                     <label for="content" class="form-label">What's on your mind?</label>
-                    <textarea 
-                        class="form-textarea" 
-                        id="content" 
-                        name="content" 
-                        placeholder="Share your thoughts, ideas, or experiences with the community..."
-                        required
-                        maxlength="500"
-                        oninput="updateCharCounter()"></textarea>
+                    <textarea class="form-textarea" id="content" name="content"
+                        placeholder="Share your thoughts, ideas, or experiences with the community..." required
+                        maxlength="500" oninput="updateCharCounter()"></textarea>
                     <div class="char-counter" id="charCounter">0 / 500 characters</div>
                 </div>
 
@@ -460,10 +458,10 @@
         }
 
         // Close dropdown when clicking outside
-        document.addEventListener('click', function(event) {
+        document.addEventListener('click', function (event) {
             const dropdown = document.getElementById('profileDropdown');
             const profileBtn = document.querySelector('.profile-btn');
-            
+
             if (!profileBtn.contains(event.target) && !dropdown.contains(event.target)) {
                 dropdown.classList.remove('show');
             }
@@ -475,15 +473,15 @@
             const submitBtn = document.getElementById('submitBtn');
             const currentLength = textarea.value.length;
             const maxLength = 500;
-            
+
             counter.textContent = `${currentLength} / ${maxLength} characters`;
-            
+
             if (currentLength > maxLength * 0.9) {
                 counter.classList.add('warning');
             } else {
                 counter.classList.remove('warning');
             }
-            
+
             if (currentLength === 0) {
                 submitBtn.disabled = true;
                 submitBtn.textContent = '📝 Publish Post';
@@ -494,17 +492,17 @@
         }
 
         // Initialize character counter
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             updateCharCounter();
         });
 
         // Form submission handling
-        document.getElementById('postForm').addEventListener('submit', function(e) {
+        document.getElementById('postForm').addEventListener('submit', function (e) {
             const submitBtn = document.getElementById('submitBtn');
             submitBtn.disabled = true;
             submitBtn.textContent = '📤 Publishing...';
         });
     </script>
 </body>
-</html>
 
+</html>

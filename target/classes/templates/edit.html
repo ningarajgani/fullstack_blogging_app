@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <title>Edit Post - TwitterApp</title>
+    <title>Edit Post - Scriblog</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
@@ -96,6 +97,7 @@
             transform: scale(1.05);
             box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
         }
+
         .dropdown-menu {
             position: absolute;
             top: 100%;
@@ -294,16 +296,17 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Header -->
     <header class="header">
         <div class="header-container">
-            <a th:href="@{/}" class="logo">TwitterApp</a>
+            <a th:href="@{/}" class="logo">Scriblog</a>
             <nav class="nav-menu">
                 <a th:href="@{/}" class="nav-link">Home</a>
                 <a th:href="@{/myposts}" class="nav-link">My Posts</a>
                 <a th:href="@{/add}" class="nav-link primary">Add Post</a>
-                
+
                 <!-- Profile Dropdown -->
                 <div class="profile-dropdown">
                     <button class="profile-btn" onclick="toggleDropdown()">U</button>
@@ -329,14 +332,8 @@
             <form th:action="@{/edit/{id}(id=${post.id})}" method="post" th:object="${post}" id="editForm">
                 <div class="form-group">
                     <label for="content" class="form-label">Post Content</label>
-                    <textarea 
-                        class="form-textarea" 
-                        id="content" 
-                        name="content" 
-                        th:field="*{content}"
-                        required
-                        maxlength="500"
-                        oninput="updateCharCounter()"></textarea>
+                    <textarea class="form-textarea" id="content" name="content" th:field="*{content}" required
+                        maxlength="500" oninput="updateCharCounter()"></textarea>
                     <div class="char-counter" id="charCounter">0 / 500 characters</div>
                 </div>
 
@@ -357,10 +354,10 @@
         }
 
         // Close dropdown when clicking outside
-        document.addEventListener('click', function(event) {
+        document.addEventListener('click', function (event) {
             const dropdown = document.getElementById('profileDropdown');
             const profileBtn = document.querySelector('.profile-btn');
-            
+
             if (!profileBtn.contains(event.target) && !dropdown.contains(event.target)) {
                 dropdown.classList.remove('show');
             }
@@ -372,15 +369,15 @@
             const submitBtn = document.getElementById('submitBtn');
             const currentLength = textarea.value.length;
             const maxLength = 500;
-            
+
             counter.textContent = `${currentLength} / ${maxLength} characters`;
-            
+
             if (currentLength > maxLength * 0.9) {
                 counter.classList.add('warning');
             } else {
                 counter.classList.remove('warning');
             }
-            
+
             if (currentLength === 0) {
                 submitBtn.disabled = true;
             } else {
@@ -389,16 +386,17 @@
         }
 
         // Initialize character counter
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             updateCharCounter();
         });
 
         // Form submission handling
-        document.getElementById('editForm').addEventListener('submit', function(e) {
+        document.getElementById('editForm').addEventListener('submit', function (e) {
             const submitBtn = document.getElementById('submitBtn');
             submitBtn.disabled = true;
             submitBtn.textContent = '💾 Updating...';
         });
     </script>
 </body>
+
 </html>

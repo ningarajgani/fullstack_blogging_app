@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <title>My Posts - TwitterApp</title>
+    <title>My Posts - Scriblog</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
@@ -80,6 +81,7 @@
             transform: translateY(-1px);
             box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
         }
+
         /* Profile Dropdown */
         .profile-dropdown {
             position: relative;
@@ -334,19 +336,21 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Header -->
     <header class="header">
         <div class="header-container">
-            <a th:href="@{/}" class="logo">TwitterApp</a>
+            <a th:href="@{/}" class="logo">Scriblog</a>
             <nav class="nav-menu">
                 <a th:href="@{/}" class="nav-link">Home</a>
                 <a th:href="@{/myposts}" class="nav-link active">My Posts</a>
                 <a th:href="@{/add}" class="nav-link primary">Add Post</a>
-                
+
                 <!-- Profile Dropdown -->
                 <div class="profile-dropdown">
-                    <button class="profile-btn" onclick="toggleDropdown()" th:text="${#strings.substring(username, 0, 1).toUpperCase()}">U</button>
+                    <button class="profile-btn" onclick="toggleDropdown()"
+                        th:text="${#strings.substring(username, 0, 1).toUpperCase()}">U</button>
                     <div class="dropdown-menu" id="profileDropdown">
                         <a href="#" class="dropdown-item" th:text="'Hello, ' + ${username}">Profile</a>
                         <a th:href="@{/logout}" class="dropdown-item logout">Logout</a>
@@ -375,11 +379,14 @@
             <article class="post-card" th:each="post : ${posts}">
                 <div class="post-content" th:text="${post.content}"></div>
                 <div class="post-meta">
-                    <div class="post-date" th:text="'Posted on ' + ${#temporals.format(post.createdAt, 'MMM dd, yyyy')}">Posted on Jan 01, 2025</div>
+                    <div class="post-date"
+                        th:text="'Posted on ' + ${#temporals.format(post.createdAt, 'MMM dd, yyyy')}">Posted on Jan 01,
+                        2025</div>
                 </div>
                 <div class="post-actions">
                     <a th:href="@{/edit/{id}(id=${post.id})}" class="btn btn-edit">✏️ Edit</a>
-                    <form th:action="@{/delete/{id}(id=${post.id})}" method="post" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this post?')">
+                    <form th:action="@{/delete/{id}(id=${post.id})}" method="post" style="display: inline;"
+                        onsubmit="return confirm('Are you sure you want to delete this post?')">
                         <button type="submit" class="btn btn-delete">🗑️ Delete</button>
                     </form>
                 </div>
@@ -402,14 +409,15 @@
         }
 
         // Close dropdown when clicking outside
-        document.addEventListener('click', function(event) {
+        document.addEventListener('click', function (event) {
             const dropdown = document.getElementById('profileDropdown');
             const profileBtn = document.querySelector('.profile-btn');
-            
+
             if (!profileBtn.contains(event.target) && !dropdown.contains(event.target)) {
                 dropdown.classList.remove('show');
             }
         });
     </script>
 </body>
+
 </html>

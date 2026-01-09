@@ -1,0 +1,68 @@
+    # FullStack Blogging App - DevOps Infrastructure Documentation
+
+    ## 1. Project Overview
+    This project is a modern **Spring Boot Java Application** (Blogging/Twitter-like clone) integrated into a professional **CI/CD (Continuous Integration / Continuous Deployment)** pipeline. The goal is to automate everything from the moment code is pushed to GitHub to the moment the application is running in a live environment.
+
+    ---
+
+    ## 2. Technology Stack & Tools Used
+
+    ### 🛠 Core Application Context
+    *   **Java 17 & Spring Boot 3**: The backbone of the application. It handles the web server, security, and database logic.
+    *   **Maven**: The build automation tool. It manages dependencies (libraries), compiles the code, runs tests, and packages the app into a JAR file.
+
+    ### 🏗 CI/CD & DevOps Tools
+    *   **Jenkins (The Orchestrator)**:
+        *   **Role**: The brain of the pipeline.
+        *   **What it does**: It monitors GitHub for changes. When you push code, Jenkins automatically triggers a "Pipeline." It follows the instructions in the `Jenkinsfile` to build, test, scan, and deploy the app.
+    *   **SonarQube (Code Quality & Security)**:
+        *   **Role**: The "Inspector."
+        *   **What it does**: It performs Static Application Security Testing (SAST). It checks for bugs, security vulnerabilities ("hotspots"), and code smells. It also reports on **Code Coverage** (how much of your code is actually tested).
+    *   **Sonatype Nexus (Artifact Repository)**:
+        *   **Role**: The "Digital Warehouse."
+        *   **What it does**: Instead of just keeping the built JAR file on one computer, we "Deploy" it to Nexus. This allows us to keep a history of every version (0.0.8, 1.0.0, etc.) so we can roll back if something breaks.
+    *   **Docker (Containerization)**:
+        *   **Role**: The "Shipping Container."
+        *   **What it does**: It packages the Java app with everything it needs to run (the OS, Java runtime, and the app) into an "Image." This ensures the app runs exactly the same on your computer, on Jenkins, and in production.
+    *   **Docker Network (`devops-net`)**:
+        *   **Role**: The "Private Internal Phone Line."
+        *   **What it does**: It allows our containers (Jenkins, Sonar, Nexus) to talk to each other using their names (e.g., `http://nexus:8081`) instead of confusing IP addresses.
+
+    ---
+
+    ## 3. The CI/CD Pipeline Breakdown (Step-by-Step)
+
+    The `Jenkinsfile` defines these 7 critical stages:
+
+    1.  **Clean Workspace**: Deletes old build files to ensure every build starts clean.
+    2.  **Checkout Code**: Pulls the latest version of your code from GitHub.
+    3.  **Build & Test**:
+        *   Compiles the Java code.
+        *   Runs Unit Tests.
+        *   Calculates **JaCoCo** code coverage.
+    4.  **SonarQube Analysis**:
+        *   Sends the code and test results to the SonarQube server.
+        *   Scans for security flaws.
+    5.  **Quality Gate**: 
+        *   A "Go/No-Go" check. If SonarQube finds too many bugs or low test coverage, it **kills the build** here to prevent bad code from reaching production.
+    6.  **Publish Artifact to Nexus**:
+        *   Uploads the final JAR file to the Nexus repository.
+        *   Uses **SNAPSHOT** versioning so developers can overwrite the same version during testing.
+    7.  **Docker Build & Deploy (CD)**:
+        *   **Build**: Creates a Docker image containing the JAR.
+        *   **Deploy**: Automatically stops any old running version and starts the new one on `http://localhost:8080`.
+
+    ---
+
+    ## 4. Key Fixes Applied (The "Pro" Setup)
+    *   **Disk Watermark Bypass**: We configured SonarQube to ignore disk space limits (95% full), preventing the "Unrecoverable indexation failure" common on local machines.
+    *   **BuildKit Disable**: We used `DOCKER_BUILDKIT=0` in Jenkins to allow the Docker build stage to use our internal `devops-net` and reach Nexus safely.
+    *   **Local Copy Pattern**: In the `Dockerfile`, we switched to `COPY target/*.jar` to avoid complex Nexus timestamp naming issues with Snapshot versions.
+
+    ---
+
+    ## 5. How to Access Your Infrastructure
+    *   **Application**: `http://localhost:8080`
+    *   **Jenkins**: `http://localhost:8081`
+    *   **SonarQube**: `http://localhost:9000`
+    *   **Nexus**: `http://localhost:8082` (Internal 8081)

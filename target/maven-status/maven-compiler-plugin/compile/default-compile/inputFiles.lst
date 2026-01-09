@@ -4,11 +4,13 @@ C:\Users\Ningaraj\Desktop\DevOps\FullStack-Blogging-App\src\main\java\com\exampl
 C:\Users\Ningaraj\Desktop\DevOps\FullStack-Blogging-App\src\main\java\com\example\twitterapp\controller\CustomErrorController.java
 C:\Users\Ningaraj\Desktop\DevOps\FullStack-Blogging-App\src\main\java\com\example\twitterapp\controller\PostController.java
 C:\Users\Ningaraj\Desktop\DevOps\FullStack-Blogging-App\src\main\java\com\example\twitterapp\controller\UserController.java
+C:\Users\Ningaraj\Desktop\DevOps\FullStack-Blogging-App\src\main\java\com\example\twitterapp\controller\VerificationController.java
 C:\Users\Ningaraj\Desktop\DevOps\FullStack-Blogging-App\src\main\java\com\example\twitterapp\model\Post.java
 C:\Users\Ningaraj\Desktop\DevOps\FullStack-Blogging-App\src\main\java\com\example\twitterapp\model\User.java
 C:\Users\Ningaraj\Desktop\DevOps\FullStack-Blogging-App\src\main\java\com\example\twitterapp\repository\PostRepository.java
 C:\Users\Ningaraj\Desktop\DevOps\FullStack-Blogging-App\src\main\java\com\example\twitterapp\repository\UserRepository.java
 C:\Users\Ningaraj\Desktop\DevOps\FullStack-Blogging-App\src\main\java\com\example\twitterapp\service\PostService.java
+C:\Users\Ningaraj\Desktop\DevOps\FullStack-Blogging-App\src\main\java\com\example\twitterapp\service\SupabaseAuthService.java
 C:\Users\Ningaraj\Desktop\DevOps\FullStack-Blogging-App\src\main\java\com\example\twitterapp\service\UserService.java
 C:\Users\Ningaraj\Desktop\DevOps\FullStack-Blogging-App\src\main\java\com\example\twitterapp\service\UserServiceImpl.java
 C:\Users\Ningaraj\Desktop\DevOps\FullStack-Blogging-App\src\main\java\com\example\twitterapp\TwitterAppApplication.java

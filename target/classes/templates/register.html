@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Register - Twitter App</title>
+    <title>Register - Scriblog</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
@@ -277,6 +277,7 @@
                 opacity: 0;
                 transform: translateY(-20px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -288,28 +289,28 @@
             .container {
                 flex-direction: column;
             }
-            
+
             .left-side {
                 flex: 0 0 40%;
             }
-            
+
             .right-side {
                 flex: 1;
                 padding: 1rem;
             }
-            
+
             .visual-content {
                 padding: 0 20px;
             }
-            
+
             .logo {
                 font-size: 2.5rem;
             }
-            
+
             .tagline {
                 font-size: 1.2rem;
             }
-            
+
             .benefits {
                 display: none;
             }
@@ -328,14 +329,15 @@
                     <a href="https://www.linkedin.com/in/abrahimcse/" target="_blank">LinkedIn</a>
                 </div>
             </div>
-            
+
             <div class="visual-content">
-                <div class="logo">Join TwitterApp</div>
+                <div class="logo">Join Scriblog</div>
                 <div class="tagline">Start Your Journey Today</div>
                 <div class="description">
-                    Create your account and become part of a vibrant community where your voice matters and connections flourish.
+                    Create your account and become part of a vibrant community where your voice matters and connections
+                    flourish.
                 </div>
-                
+
                 <div class="benefits">
                     <div class="benefit">
                         <div class="benefit-icon">🎯</div>
@@ -376,22 +378,34 @@
                 </div>
 
                 <div th:if="${Userexist}">
-                    <div class="error-message">
+                    <div class="error-message" th:text="${Userexist}">
                         Username is already taken. Please choose a different one.
+                    </div>
+                </div>
+
+                <div th:if="${Emailexist}">
+                    <div class="error-message" th:text="${Emailexist}">
+                        Email is already registered.
                     </div>
                 </div>
 
                 <form th:action="@{/register}" method="post" role="form" th:object="${user}">
                     <div class="form-group">
                         <label for="username" class="form-label">Username</label>
-                        <input th:field="*{username}" type="text" id="username" name="username"
-                            class="form-input" placeholder="Choose a unique username" required>
+                        <input th:field="*{username}" type="text" id="username" name="username" class="form-input"
+                            placeholder="Choose a unique username" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email Address</label>
+                        <input th:field="*{email}" type="email" id="email" name="email" class="form-input"
+                            placeholder="Enter your email address" required>
                     </div>
 
                     <div class="form-group">
                         <label for="password" class="form-label">Password</label>
-                        <input th:field="*{password}" type="password" id="password" name="password"
-                            class="form-input" placeholder="Create a strong password" required>
+                        <input th:field="*{password}" type="password" id="password" name="password" class="form-input"
+                            placeholder="Create a strong password" required>
                     </div>
 
                     <button type="submit" class="register-btn">Create Account</button>
@@ -406,4 +420,3 @@
 </body>
 
 </html>
-

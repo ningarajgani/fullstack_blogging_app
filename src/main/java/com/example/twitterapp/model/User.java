@@ -6,11 +6,13 @@ import jakarta.persistence.*;
 @Table(name = "users")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     // @Column(unique = true)
     private String username;
+    private String email;
     private String password;
+    private boolean verified = false;
 
     public User() {
 
@@ -38,6 +40,22 @@ public class User {
         this.username = username;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public boolean isVerified() {
+        return verified;
+    }
+
+    public void setVerified(boolean verified) {
+        this.verified = verified;
+    }
+
     public String getPassword() {
         return password;
     }
@@ -48,7 +66,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User [id=" + id + ", username=" + username + ", password=" + password + "]";
+        return "User [id=" + id + ", username=" + username + ", email=" + email + ", verified=" + verified + "]";
     }
 
 }

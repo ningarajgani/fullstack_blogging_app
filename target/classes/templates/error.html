@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <title>Error - TwitterApp</title>
+    <title>Error - Scriblog</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
@@ -115,17 +116,19 @@
         }
     </style>
 </head>
+
 <body>
     <div class="error-container">
         <div class="error-icon">😕</div>
         <div class="error-code" th:text="${errorCode}">404</div>
         <h1 class="error-title" th:text="${errorMessage}">Page Not Found</h1>
         <p class="error-description" th:text="${errorDescription}">The page you are looking for doesn't exist.</p>
-        
+
         <div class="error-actions">
             <a href="/" class="btn btn-primary">Go Home</a>
             <a href="/login" class="btn btn-secondary">Login</a>
         </div>
     </div>
 </body>
+
 </html>

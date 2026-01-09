@@ -36,12 +36,17 @@ public class UserController {
 
     @PostMapping("/register")
     public String registerSava(@ModelAttribute("user") User userDto, Model model) {
-        User user = userService.findByUsername(userDto.getUsername());
-        if (user != null) {
-            model.addAttribute("Userexist", user);
+        User existingUserByUsername = userService.findByUsername(userDto.getUsername());
+        if (existingUserByUsername != null) {
+            model.addAttribute("Userexist", "Username is already taken.");
+            return "register";
+        }
+        User existingUserByEmail = userService.findByEmail(userDto.getEmail());
+        if (existingUserByEmail != null) {
+            model.addAttribute("Emailexist", "Email is already registered.");
             return "register";
         }
         userService.save(userDto);
-        return "redirect:/register?success";
+        return "redirect:/verify?email=" + userDto.getEmail();
     }
 }

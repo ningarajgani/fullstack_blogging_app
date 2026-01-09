@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Login - Twitter App</title>
+    <title>Login - Scriblog</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
@@ -269,6 +269,7 @@
                 opacity: 0;
                 transform: translateY(-20px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -280,28 +281,28 @@
             .container {
                 flex-direction: column;
             }
-            
+
             .left-side {
                 flex: 0 0 40%;
             }
-            
+
             .right-side {
                 flex: 1;
                 padding: 1rem;
             }
-            
+
             .visual-content {
                 padding: 0 20px;
             }
-            
+
             .logo {
                 font-size: 2.5rem;
             }
-            
+
             .tagline {
                 font-size: 1.2rem;
             }
-            
+
             .features {
                 display: none;
             }
@@ -320,14 +321,15 @@
                     <a href="https://www.linkedin.com/in/abrahimcse/" target="_blank">LinkedIn</a>
                 </div>
             </div>
-            
+
             <div class="visual-content">
-                <div class="logo">TwitterApp</div>
+                <div class="logo">Scriblog</div>
                 <div class="tagline">Connect. Share. Engage.</div>
                 <div class="description">
-                    Join millions of users sharing their thoughts, connecting with friends, and staying updated with the latest trends.
+                    Join millions of users sharing their thoughts, connecting with friends, and staying updated with the
+                    latest trends.
                 </div>
-                
+
                 <div class="features">
                     <div class="feature">
                         <div class="feature-icon">🚀</div>
@@ -368,14 +370,14 @@
                 <form th:action="@{/login}" method="post" role="form" th:object="${user}">
                     <div class="form-group">
                         <label for="username" class="form-label">Username</label>
-                        <input th:field="*{username}" type="text" id="username" name="username"
-                            class="form-input" placeholder="Enter your username" required>
+                        <input th:field="*{username}" type="text" id="username" name="username" class="form-input"
+                            placeholder="Enter your username" required>
                     </div>
 
                     <div class="form-group">
                         <label for="password" class="form-label">Password</label>
-                        <input th:field="*{password}" type="password" id="password" name="password"
-                            class="form-input" placeholder="Enter your password" required>
+                        <input th:field="*{password}" type="password" id="password" name="password" class="form-input"
+                            placeholder="Enter your password" required>
                     </div>
 
                     <button type="submit" class="login-btn">Sign In</button>
@@ -390,4 +392,3 @@
 </body>
 
 </html>
-
