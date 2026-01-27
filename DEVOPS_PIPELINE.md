@@ -188,6 +188,16 @@ stage('Deploy to Kubernetes') {
    timeout(time: 10, unit: 'MINUTES')
    ```
 
+### Troubleshooting Docker Permission Denied
+
+If you see `permission denied while trying to connect to the Docker daemon socket`, it means the Jenkins container cannot access the host's Docker engine.
+
+**Fix:**
+Run this on your host machine to grant permission:
+```bash
+docker exec -u 0 -it <jenkins_container_id> chmod 666 /var/run/docker.sock
+```
+
 ## 📈 Quality Metrics
 
 ### Current Targets:
