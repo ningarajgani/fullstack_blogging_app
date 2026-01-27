@@ -89,7 +89,7 @@ pipeline {
             steps {
                 script {
                     sh '''
-                      export DOCKER_BUILDKIT=0
+                      // export DOCKER_BUILDKIT=0
                       docker build --network devops-net -t ningarajgani/fullstack-blogging-app:${APP_VERSION} .
                       docker tag ningarajgani/fullstack-blogging-app:${APP_VERSION} ningarajgani/fullstack-blogging-app:latest
                     '''
