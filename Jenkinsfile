@@ -91,7 +91,6 @@ pipeline {
                     sh '''
                       # Attempt to fix docker socket permissions (ignoring errors if not permitted)
                       chmod 666 /var/run/docker.sock || true
-
                       docker build --network devops-net -t ningarajgani/fullstack-blogging-app:${APP_VERSION} .
                       docker tag ningarajgani/fullstack-blogging-app:${APP_VERSION} ningarajgani/fullstack-blogging-app:latest
                     '''
