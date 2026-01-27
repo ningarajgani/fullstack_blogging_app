@@ -89,13 +89,8 @@ pipeline {
             steps {
                 script {
                     sh '''
-                      # Try to fix permissions if sudo is available (common fix for Docker-in-Docker)
-                      if [ -w /var/run/docker.sock ]; then
-                        echo "Docker socket is writable."
-                      else
-                        echo "Docker socket is NOT writable. Attempting to fix..."
-                        sudo chmod 666 /var/run/docker.sock || echo "Failed to chmod socket. If this fails, restart Jenkins container with '-u root' or '-v /var/run/docker.sock:/var/run/docker.sock' permissions."
-                      fi
+                      # Attempt to fix docker socket permissions (ignoring errors if not permitted)
+                      chmod 666 /var/run/docker.sock || true
 
                       docker build --network devops-net -t ningarajgani/fullstack-blogging-app:${APP_VERSION} .
                       docker tag ningarajgani/fullstack-blogging-app:${APP_VERSION} ningarajgani/fullstack-blogging-app:latest
